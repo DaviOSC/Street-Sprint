@@ -1,25 +1,52 @@
 extends CharacterBody2D
 
-
 const SPEED = 300.0
 const JUMP_VELOCITY = -400.0
 
+# Variável para rastrear a posição atual
+var currentPosition = 1
 
-func _physics_process(delta: float) -> void:
-	# Add the gravity.
-	if not is_on_floor():
-		velocity += get_gravity() * delta
+# Lista de possíveis posições
+var possiblePositions = []
 
-	# Handle jump.
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
+# Variáveis para rastrear o estado das ações
+var move_left_pressed = false
+var move_right_pressed = false
 
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
-	var direction := Input.get_axis("ui_left", "ui_right")
-	if direction:
-		velocity.x = direction * SPEED
-	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
+func _ready():
+	# Adicione os marcadores à lista. Use nomes de nós ou caminhos relativos.
+	possiblePositions.append(get_node("../Position 0"))
+	possiblePositions.append(get_node("../Position 1"))
+	possiblePositions.append(get_node("../Position 2"))
 
-	move_and_slide()
+func _physics_process(_delta: float) -> void:
+	# Verifique a entrada do teclado para mudar a posição atual apenas uma vez por clique
+	if Input.is_action_just_pressed("Move Left") and currentPosition > 0:
+		if not move_left_pressed:
+			currentPosition -= 1
+			print("Esquerda")
+			move_left_pressed = true
+	elif Input.is_action_just_pressed("Move Right") and currentPosition < possiblePositions.size() - 1:
+		if not move_right_pressed:
+			currentPosition += 1
+			print("Direita")
+			move_right_pressed = true
+
+	# Resetar flags se a tecla não estiver mais pressionada
+	if not Input.is_action_pressed("Move Left"):
+		move_left_pressed = false
+	if not Input.is_action_pressed("Move Right"):
+		move_right_pressed = false
+
+	# Atualize a posição do jogador para o marcador atual
+	if possiblePositions.size() > 0 and currentPosition >= 0 and currentPosition < possiblePositions.size():
+		var target_position = possiblePositions[currentPosition].position  # Use 'position' se 'global_position' não estiver disponível
+		global_position = target_position
+
+	# Lógica adicional para outras ações
+	if Input.is_action_just_pressed("Jump"):
+		pass
+	elif Input.is_action_just_pressed("Roll"):
+		pass    
+	elif Input.is_action_just_pressed("Action"):
+		pass
