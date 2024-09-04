@@ -14,4 +14,4 @@ func _process(delta: float) -> void:
 	
 	
 func changePosition() -> void:
-	get_node("Player")._physics_process(1)
+	get_node("Player")._physics_process(0.5)
