@@ -20,3 +20,4 @@ position = Vector2(200, 78)
 position = Vector2(320, 78)
 
 [node name="Timer" type="Timer" parent="."]
+wait_time = 3.0
