@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://cgmuxg56s7rq6" path="res://icon.svg" id="1_qw1ga"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8j7oc"]
-size = Vector2(121, 121)
+size = Vector2(109, 111)
 
 [node name="ObstaculoArea" type="Area2D"]
 script = ExtResource("1_a3fd6")

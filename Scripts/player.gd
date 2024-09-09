@@ -6,6 +6,8 @@ const JUMP_HEIGHT = 50.0
 # Variável para rastrear a posição atual
 var currentPosition = 1
 
+@onready var Animator = $AnimatedSprite2D
+
 # Lista de possíveis posições
 var possiblePositions = []
 
@@ -32,18 +34,19 @@ func _ready():
 
 	# Conecte o sinal do temporizador
 	$JumpTimer.timeout.connect(self._on_timer_timeout)
+	
+	Animator.play("RunUp")
 
 func _physics_process(_delta: float) -> void:
 	# Verifique a entrada do teclado para mudar a posição atual apenas uma vez por clique
 	if Input.is_action_just_pressed("Move Left") and currentPosition > 0:
 		if not move_left_pressed:
 			currentPosition -= 1
-			print("Esquerda")
 			move_left_pressed = true
+
 	elif Input.is_action_just_pressed("Move Right") and currentPosition < possiblePositions.size() - 1:
 		if not move_right_pressed:
 			currentPosition += 1
-			print("Direita")
 			move_right_pressed = true
 
 	# Resetar flags se a tecla não estiver mais pressionada
@@ -51,6 +54,7 @@ func _physics_process(_delta: float) -> void:
 		move_left_pressed = false
 	if not Input.is_action_pressed("Move Right"):
 		move_right_pressed = false
+		
 
 	# Atualize a posição alvo do jogador para o marcador atual
 	if (move_right_pressed or move_left_pressed) and possiblePositions.size() > 0 and currentPosition >= 0 and currentPosition < possiblePositions.size():
@@ -77,13 +81,26 @@ func _physics_process(_delta: float) -> void:
 
 func move(_delta: float) -> void:
 	# Mova o jogador gradualmente para a posição alvo
-	global_position.x = move_toward(global_position.x, target_position.x, SPEED * _delta)
+	if global_position.x != target_position.x:
+		global_position.x = move_toward(global_position.x, target_position.x, SPEED * _delta)
+
+	# Controle de animação enquanto o jogador está se movendo
+	if global_position.x != target_position.x:
+		if move_right_pressed:
+			# Trocar animação para correr para a direita
+			Animator.play("RunRight")
+		elif move_left_pressed:
+			# Trocar animação para correr para a esquerda
+			Animator.play("RunLeft")
+	else:
+		# Quando o jogador alcança a target_position, mantenha a animação 'RunUp'
+		if not isJumping:
+			Animator.play("RunUp")
 
 func jump() -> void:
 	# Iniciar o pulo
 	canJump = false
 	isJumping = true
-	print("jump")
 	initial_position = global_position
 	jump_target_position = global_position - Vector2(0, JUMP_HEIGHT)
 	$JumpTimer.start(1)
@@ -95,6 +112,5 @@ func jump_move(_delta: float) -> void:
 
 func _on_timer_timeout():
 	# Retorne o jogador à posição inicial
-	print("TIMEOUT")
 	isJumping = false
 	$JumpTimer.stop()

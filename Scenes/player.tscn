@@ -1,23 +1,99 @@
-[gd_scene load_steps=5 format=3 uid="uid://bneihnj1mtfk3"]
+[gd_scene load_steps=14 format=3 uid="uid://bneihnj1mtfk3"]
 
 [ext_resource type="Script" path="res://Scripts/player.gd" id="1_oxaug"]
 [ext_resource type="Texture2D" uid="uid://c1ja2vlfc43ku" path="res://Assets/Jake.png" id="2_8xmdg"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_toghc"]
 
-[sub_resource type="GDScript" id="GDScript_pk0c1"]
-script/source = "extends Timer
+[sub_resource type="AtlasTexture" id="AtlasTexture_uj17w"]
+atlas = ExtResource("2_8xmdg")
+region = Rect2(0, 64, 32, 32)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_4xl7q"]
+atlas = ExtResource("2_8xmdg")
+region = Rect2(0, 96, 32, 32)
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
+[sub_resource type="AtlasTexture" id="AtlasTexture_kluuq"]
+atlas = ExtResource("2_8xmdg")
+region = Rect2(0, 32, 32, 32)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_oqtwk"]
+atlas = ExtResource("2_8xmdg")
+region = Rect2(32, 0, 32, 32)
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-"
+[sub_resource type="AtlasTexture" id="AtlasTexture_duryv"]
+atlas = ExtResource("2_8xmdg")
+region = Rect2(32, 64, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jxe57"]
+atlas = ExtResource("2_8xmdg")
+region = Rect2(32, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7kcgh"]
+atlas = ExtResource("2_8xmdg")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vo60a"]
+atlas = ExtResource("2_8xmdg")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4x3uo"]
+atlas = ExtResource("2_8xmdg")
+region = Rect2(32, 96, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_l7mr8"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uj17w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4xl7q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uj17w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kluuq")
+}],
+"loop": true,
+"name": &"RunLeft",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oqtwk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_duryv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oqtwk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jxe57")
+}],
+"loop": true,
+"name": &"RunRight",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7kcgh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vo60a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7kcgh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4x3uo")
+}],
+"loop": true,
+"name": &"RunUp",
+"speed": 10.0
+}]
 
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 position = Vector2(130, -4)
@@ -25,6 +101,7 @@ collision_layer = 15
 script = ExtResource("1_oxaug")
 
 [node name="Sprite" type="Sprite2D" parent="."]
+visible = false
 position = Vector2(0, -1)
 texture = ExtResource("2_8xmdg")
 hframes = 3
@@ -35,4 +112,8 @@ frame = 5
 shape = SubResource("CapsuleShape2D_toghc")
 
 [node name="JumpTimer" type="Timer" parent="."]
-script = SubResource("GDScript_pk0c1")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_l7mr8")
+animation = &"RunLeft"
+frame_progress = 0.476879
