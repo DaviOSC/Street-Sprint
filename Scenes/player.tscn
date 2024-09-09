@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://bneihnj1mtfk3"]
 
 [ext_resource type="Script" path="res://Scripts/player.gd" id="1_oxaug"]
-[ext_resource type="Texture2D" uid="uid://ccoqhnorrbktc" path="res://Assets/Dreew.png" id="2_rmkd2"]
+[ext_resource type="Texture2D" uid="uid://c1ja2vlfc43ku" path="res://Assets/Jake.png" id="2_8xmdg"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_toghc"]
 
@@ -19,14 +19,14 @@ func _process(delta: float) -> void:
 	pass
 "
 
-[node name="Player" type="CharacterBody2D"]
+[node name="Player" type="CharacterBody2D" groups=["Player"]]
 position = Vector2(130, -4)
 collision_layer = 15
 script = ExtResource("1_oxaug")
 
-[node name="Dreew" type="Sprite2D" parent="."]
+[node name="Sprite" type="Sprite2D" parent="."]
 position = Vector2(0, -1)
-texture = ExtResource("2_rmkd2")
+texture = ExtResource("2_8xmdg")
 hframes = 3
 vframes = 4
 frame = 5

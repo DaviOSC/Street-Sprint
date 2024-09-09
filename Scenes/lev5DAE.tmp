@@ -1,7 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://b0w8yy7276nku"]
+[gd_scene load_steps=4 format=3 uid="uid://b0w8yy7276nku"]
 
 [ext_resource type="Script" path="res://Scripts/level.gd" id="1_hgk3k"]
 [ext_resource type="PackedScene" uid="uid://bneihnj1mtfk3" path="res://Scenes/player.tscn" id="2_ngc5o"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lcbbp"]
+size = Vector2(384, 20)
 
 [node name="level" type="Node2D"]
 script = ExtResource("1_hgk3k")
@@ -9,6 +12,14 @@ script = ExtResource("1_hgk3k")
 [node name="Player" parent="." instance=ExtResource("2_ngc5o")]
 position = Vector2(198, 480)
 scale = Vector2(3, 3)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+visible = false
+position = Vector2(288, 118)
+collision_layer = 15
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+shape = SubResource("RectangleShape2D_lcbbp")
 
 [node name="Position 0" type="Marker2D" parent="."]
 position = Vector2(80, 78)
