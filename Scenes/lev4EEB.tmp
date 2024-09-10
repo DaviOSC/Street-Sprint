@@ -47,7 +47,6 @@ texture_repeat = 2
 material = SubResource("ShaderMaterial_he8i8")
 offset_right = 40.0
 offset_bottom = 40.0
-scale = Vector2(0.998923, 1.01337)
 texture = ExtResource("3_twru5")
 
 [connection signal="timeout" from="ObstacleSpawnTimer" to="." method="_on_timer_timeout"]

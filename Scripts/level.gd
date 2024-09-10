@@ -9,6 +9,7 @@ var barrier3 = preload("res://Scenes/barrier3.tscn")
 var positions = []
 var obstaculos = []
 var canSpawn = false
+var score = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -28,6 +29,7 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	changePosition()
+	updateScore()
 	if canSpawn:
 		spawnObstacle(obstaculos.pick_random())
 		canSpawn = false
@@ -44,6 +46,10 @@ func spawnObstacle(obstaculoType) -> void:
 	if position_node:
 		obstaculo_instance.global_position = position_node.global_position
 
-
+func updateScore():
+	score += 1
+	if score % 100 == 0:
+		print("Score:", score)
+	
 func _on_timer_timeout() -> void:
 	canSpawn = true # Replace with function body.

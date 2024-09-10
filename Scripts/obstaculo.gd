@@ -14,4 +14,4 @@ func _on_body_entered(body: Node2D) -> void:
 		
 func restart_level():
 	var current_scene = get_tree().current_scene
-	get_tree().reload_current_scene()
+	get_tree().call_deferred("reload_current_scene")
