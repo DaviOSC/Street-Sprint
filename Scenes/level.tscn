@@ -1,16 +1,18 @@
-[gd_scene load_steps=6 format=3 uid="uid://b0w8yy7276nku"]
+[gd_scene load_steps=7 format=3 uid="uid://b0w8yy7276nku"]
 
 [ext_resource type="Script" path="res://Scripts/level.gd" id="1_hgk3k"]
 [ext_resource type="PackedScene" uid="uid://bneihnj1mtfk3" path="res://Scenes/player.tscn" id="2_ngc5o"]
 [ext_resource type="Texture2D" uid="uid://heysw7y4nwi7" path="res://Assets/tracks.png" id="3_twru5"]
 [ext_resource type="Shader" path="res://shader/backgroundtracks.gdshader" id="4_5de8k"]
+[ext_resource type="PackedScene" uid="uid://dhaxynhpy176p" path="res://Scenes/UI.tscn" id="5_wktwd"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_he8i8"]
 shader = ExtResource("4_5de8k")
 shader_parameter/speed = 0.15
 
-[node name="level" type="Node2D"]
+[node name="level" type="Node2D" node_paths=PackedStringArray("ui")]
 script = ExtResource("1_hgk3k")
+ui = NodePath("UI")
 
 [node name="Player" parent="." instance=ExtResource("2_ngc5o")]
 z_index = 2
@@ -49,5 +51,7 @@ offset_right = 40.0
 offset_bottom = 40.0
 scale = Vector2(0.998923, 1.01337)
 texture = ExtResource("3_twru5")
+
+[node name="UI" parent="." instance=ExtResource("5_wktwd")]
 
 [connection signal="timeout" from="ObstacleSpawnTimer" to="." method="_on_timer_timeout"]

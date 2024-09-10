@@ -1,5 +1,6 @@
 extends Node2D
 
+@export var ui: UI
 @export var gameSpeed = 0.25
 @onready var obstacleSpawnTimer = $ObstacleSpawnTimer
 @onready var shader_material = $TextureRect.material
@@ -10,6 +11,10 @@ var positions = []
 var obstaculos = []
 var canSpawn = false
 var score = 0
+
+
+
+signal _on_score_updated(score)
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -24,7 +29,7 @@ func _ready() -> void:
 	obstaculos.append(barrier1)
 	obstaculos.append(barrier2)
 	obstaculos.append(barrier3)
-	obstacleSpawnTimer.start(gameSpeed*5)
+	obstacleSpawnTimer.start(gameSpeed)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -49,7 +54,7 @@ func spawnObstacle(obstaculoType) -> void:
 func updateScore():
 	score += 1
 	if score % 100 == 0:
-		print("Score:", score)
+		ui._on_score_updated(score)
 	
 func _on_timer_timeout() -> void:
 	canSpawn = true # Replace with function body.
