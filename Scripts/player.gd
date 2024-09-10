@@ -16,11 +16,14 @@ var move_left_pressed = false
 var move_right_pressed = false
 var isJumping = false
 var canJump = true
+var canRoll = true
+var isRolling = false
 
 # Variável para rastrear a posição alvo
 var target_position = Vector2()
 var initial_position = Vector2()
 var jump_target_position = Vector2()
+
 
 func _ready():
 	# Adicione os marcadores à lista. Use nomes de nós ou caminhos relativos.
@@ -33,7 +36,7 @@ func _ready():
 	initial_position = global_position
 
 	# Conecte o sinal do temporizador
-	$JumpTimer.timeout.connect(self._on_timer_timeout)
+	#$JumpTimer.timeout.connect(self._on_timer_timeout)
 	
 	Animator.play("RunUp")
 
@@ -74,8 +77,9 @@ func _physics_process(_delta: float) -> void:
 	if Input.is_action_just_pressed("Jump") and not isJumping:
 		if(canJump):
 			jump()
-	elif Input.is_action_just_pressed("Roll"):
-		pass    
+	elif Input.is_action_just_pressed("Roll") and not isRolling:
+		if(canRoll):
+			roll()    
 	elif Input.is_action_just_pressed("Action"):
 		pass
 
@@ -87,14 +91,11 @@ func move(_delta: float) -> void:
 	# Controle de animação enquanto o jogador está se movendo
 	if global_position.x != target_position.x:
 		if move_right_pressed:
-			# Trocar animação para correr para a direita
 			Animator.play("RunRight")
 		elif move_left_pressed:
-			# Trocar animação para correr para a esquerda
 			Animator.play("RunLeft")
 	else:
-		# Quando o jogador alcança a target_position, mantenha a animação 'RunUp'
-		if not isJumping:
+		if not isJumping and not isRolling:
 			Animator.play("RunUp")
 
 func jump() -> void:
@@ -103,14 +104,25 @@ func jump() -> void:
 	isJumping = true
 	initial_position = global_position
 	jump_target_position = global_position - Vector2(0, JUMP_HEIGHT)
+	Animator.play("Jump")
 	$JumpTimer.start(1)
 
 func jump_move(_delta: float) -> void:
 	# Mova o jogador gradualmente para cima
 	global_position.y = move_toward(global_position.y, jump_target_position.y, SPEED * _delta)
 	# Verifique se o movimento foi concluído
+func roll() -> void:
+	canRoll = false
+	isRolling = true
+	Animator.play("Roll")
+	$RollTimer.start(1)
 
-func _on_timer_timeout():
-	# Retorne o jogador à posição inicial
+func _on_roll_timer_timeout() -> void:
+	isRolling = false
+	canRoll = true
+	$RollTimer.stop() 
+
+
+func _on_jump_timer_timeout() -> void:
 	isJumping = false
-	$JumpTimer.stop()
+	$JumpTimer.stop() # Replace with function body.

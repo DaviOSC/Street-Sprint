@@ -13,20 +13,21 @@ shader_parameter/speed = 0.15
 script = ExtResource("1_hgk3k")
 
 [node name="Player" parent="." instance=ExtResource("2_ngc5o")]
-position = Vector2(200, 533)
-scale = Vector2(3, 3)
+z_index = 2
+position = Vector2(200, 460)
+scale = Vector2(2.5, 2.5)
 
 [node name="Position 0" type="Marker2D" parent="."]
-position = Vector2(80, 78)
+position = Vector2(80, 28)
 
 [node name="Position 1" type="Marker2D" parent="."]
-position = Vector2(200, 78)
+position = Vector2(200, 28)
 
 [node name="Position 2" type="Marker2D" parent="."]
-position = Vector2(320, 78)
+position = Vector2(320, 28)
 
-[node name="Timer" type="Timer" parent="."]
-wait_time = 1.5
+[node name="ObstacleSpawnTimer" type="Timer" parent="."]
+wait_time = 0.75
 
 [node name="TracksImage" type="ParallaxBackground" parent="."]
 visible = false
@@ -48,4 +49,4 @@ offset_right = 40.0
 offset_bottom = 40.0
 texture = ExtResource("3_twru5")
 
-[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="ObstacleSpawnTimer" to="." method="_on_timer_timeout"]
