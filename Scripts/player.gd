@@ -38,7 +38,7 @@ func _ready():
 	# Conecte o sinal do temporizador
 	#$JumpTimer.timeout.connect(self._on_timer_timeout)
 	
-	Animator.play("RunUp")
+	#Animator.play("RunUp")
 
 func _physics_process(_delta: float) -> void:
 	# Verifique a entrada do teclado para mudar a posição atual apenas uma vez por clique

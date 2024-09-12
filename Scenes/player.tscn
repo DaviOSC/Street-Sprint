@@ -65,7 +65,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"Jump",
-"speed": 5.0
+"speed": 10.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -82,7 +82,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"Roll",
-"speed": 5.0
+"speed": 10.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -159,6 +159,7 @@ shape = SubResource("CapsuleShape2D_toghc")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_l7mr8")
 animation = &"Jump"
+autoplay = "RunUp"
 
 [connection signal="timeout" from="JumpTimer" to="." method="_on_jump_timer_timeout"]
 [connection signal="timeout" from="RollTimer" to="." method="_on_roll_timer_timeout"]
