@@ -27,9 +27,9 @@ var jump_target_position = Vector2()
 
 func _ready():
 	# Adicione os marcadores à lista. Use nomes de nós ou caminhos relativos.
-	possiblePositions.append(get_node("../Position 0"))
-	possiblePositions.append(get_node("../Position 1"))
-	possiblePositions.append(get_node("../Position 2"))
+	possiblePositions.append(get_node("../Markers/Position 0"))
+	possiblePositions.append(get_node("../Markers/Position 1"))
+	possiblePositions.append(get_node("../Markers/Position 2"))
 
 	# Inicialize a posição alvo e a posição inicial
 	target_position = global_position

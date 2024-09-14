@@ -1,36 +1,27 @@
 extends Node2D
 
 @export var ui: UI
+@export var barriers = [PackedScene]
 @export var gameSpeed = 0.25
 @onready var obstacleSpawnTimer = $ObstacleSpawnTimer
-@onready var shader_material = $TextureRect.material
-var barrier1 = preload("res://Scenes/barrier1.tscn")
-var barrier2 = preload("res://Scenes/barrier2.tscn")
-var barrier3 = preload("res://Scenes/barrier3.tscn")
-
-@export var barriers = [PackedScene]
-
+@onready var obstacle_boundaries = $"Markers/Obstacle Boundaries"
+@onready var audioPlayer = $AudioStreamPlayer2D
+@onready var parallaxBackground = $ParallaxBackground
 var positions = []
 var obstaculos = []
 var canSpawn = false
 var score = 0
 var base_time = 2.5
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	if shader_material is ShaderMaterial:
-		setGameSpeed()
-	positions.append($"Position 0")
-	positions.append($"Position 1")
-	positions.append($"Position 2")
+func _ready() -> void:	
+	positions.append($"Markers/Position 0")
+	positions.append($"Markers/Position 1")
+	positions.append($"Markers/Position 2")
 	for barrier in barriers:
 		obstaculos.append(barrier)
-	
-	#obstaculos.append(barrier1)
-	#obstaculos.append(barrier2)
-	#obstaculos.append(barrier3)
+	audioPlayer.play()
+	setGameSpeed()
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	changePosition()
 	updateScore()
@@ -38,11 +29,11 @@ func _process(delta: float) -> void:
 	if canSpawn:
 		spawnObstacle(obstaculos.pick_random())
 		canSpawn = false
-	
-	
+	checkObstacleBoundaries()
+
 func changePosition() -> void:
 	get_node("Player")._physics_process(0.5)
-	
+
 func spawnObstacle(obstaculoType) -> void:
 	var obstaculo_instance = obstaculoType.instantiate()
 	obstaculo_instance.set("fall_speed", gameSpeed*500)
@@ -55,18 +46,49 @@ func updateScore():
 	score += 1
 	if score % 100 == 0:
 		ui._on_score_updated(score)
-		
+
 func setGameSpeed():
 	var spawn_timer_clock = base_time * (0.25 / gameSpeed)
 	obstacleSpawnTimer.start(spawn_timer_clock)
-	shader_material.set_shader_parameter("speed", gameSpeed*0.405)
-	
+	parallaxBackground.set("speed", gameSpeed*500)
+	for child in get_children():
+		if child.is_in_group("obstacles"):
+			child.set("fall_speed", gameSpeed*500)
+
 func increaseGameSpeed():
 	if score % 1000 == 0:
 		gameSpeed += 0.05
 		setGameSpeed()
-		print(gameSpeed)
-	
-	
+
+func checkObstacleBoundaries() -> void:
+	for child in get_children():
+		if child.is_in_group("obstacles"):
+			if child.global_position.y > obstacle_boundaries.global_position.y:
+				child.queue_free()
+
 func _on_timer_timeout() -> void:
 	canSpawn = true
+
+func pauseGame() -> void:
+	var current_scene = get_tree().current_scene
+	var ui = current_scene.get_node("UI")
+	if ui:
+		ui.process_mode = Node.PROCESS_MODE_ALWAYS
+		var pause_button = ui.get_node("%PauseButton")
+		pause_button.visible = true
+		if pause_button:
+			pause_button.process_mode = Node.PROCESS_MODE_ALWAYS
+			pause_button.visible = true
+	get_tree().paused = true
+
+
+func resumeGame() -> void:
+	get_tree().paused = false
+	var current_scene = get_tree().current_scene
+	var ui = current_scene.get_node("UI")
+	if ui:
+		ui.process_mode = Node.PROCESS_MODE_INHERIT
+		var pause_button = ui.get_node("PauseButton")
+		if pause_button:
+			pause_button.process_mode = Node.PROCESS_MODE_INHERIT
+			pause_button.visible = false

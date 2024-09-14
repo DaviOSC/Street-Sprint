@@ -3,7 +3,8 @@
 [ext_resource type="Script" path="res://Scripts/player.gd" id="1_oxaug"]
 [ext_resource type="Texture2D" uid="uid://c1ja2vlfc43ku" path="res://Assets/Jake.png" id="2_8xmdg"]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_toghc"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_owox3"]
+size = Vector2(15, 23)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_im0kg"]
 atlas = ExtResource("2_8xmdg")
@@ -150,7 +151,8 @@ vframes = 4
 frame = 5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CapsuleShape2D_toghc")
+position = Vector2(-0.5, 1.5)
+shape = SubResource("RectangleShape2D_owox3")
 
 [node name="JumpTimer" type="Timer" parent="."]
 
@@ -160,6 +162,11 @@ shape = SubResource("CapsuleShape2D_toghc")
 sprite_frames = SubResource("SpriteFrames_l7mr8")
 animation = &"Jump"
 autoplay = "RunUp"
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(0, -77)
+position_smoothing_enabled = true
+position_smoothing_speed = 10.0
 
 [connection signal="timeout" from="JumpTimer" to="." method="_on_jump_timer_timeout"]
 [connection signal="timeout" from="RollTimer" to="." method="_on_roll_timer_timeout"]

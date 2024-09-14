@@ -26,6 +26,7 @@ window/handheld/orientation=1
 [global_group]
 
 Player="The Player"
+obstacles=""
 
 [input]
 

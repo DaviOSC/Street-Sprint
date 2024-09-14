@@ -1,62 +1,64 @@
-[gd_scene load_steps=11 format=3 uid="uid://b0w8yy7276nku"]
+[gd_scene load_steps=14 format=3 uid="uid://b0w8yy7276nku"]
 
 [ext_resource type="Script" path="res://Scripts/level.gd" id="1_hgk3k"]
 [ext_resource type="PackedScene" uid="uid://bneihnj1mtfk3" path="res://Scenes/player.tscn" id="2_ngc5o"]
 [ext_resource type="PackedScene" uid="uid://1564x8lctd8c" path="res://Scenes/barrier1.tscn" id="2_wf7aa"]
 [ext_resource type="PackedScene" uid="uid://c1kr04gs6rqsv" path="res://Scenes/barrier2.tscn" id="3_88mqr"]
-[ext_resource type="Texture2D" uid="uid://heysw7y4nwi7" path="res://Assets/tracks.png" id="3_twru5"]
-[ext_resource type="Shader" path="res://shader/backgroundtracks.gdshader" id="4_5de8k"]
 [ext_resource type="PackedScene" uid="uid://bjogepgbfyga8" path="res://Scenes/barrier3.tscn" id="4_qtj2e"]
+[ext_resource type="PackedScene" uid="uid://bdq11mgkbuol0" path="res://Scenes/BrownTrain.tscn" id="5_b6b2b"]
 [ext_resource type="PackedScene" uid="uid://dhaxynhpy176p" path="res://Scenes/UI.tscn" id="5_wktwd"]
 [ext_resource type="Script" path="res://Scripts/parallax_background.gd" id="6_gs16n"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_he8i8"]
-shader = ExtResource("4_5de8k")
-shader_parameter/speed = 0.15
+[ext_resource type="PackedScene" uid="uid://bxw6et37o10rk" path="res://Scenes/StaticBlueTrain.tscn" id="6_i167j"]
+[ext_resource type="PackedScene" uid="uid://b5r3u1qrj20wg" path="res://Scenes/BlueTrain.tscn" id="6_qlk67"]
+[ext_resource type="PackedScene" uid="uid://c5kdfxm6t5wc" path="res://Scenes/StaticBrownTrain.tscn" id="7_156qa"]
+[ext_resource type="Texture2D" uid="uid://cahwmfvqqlc8d" path="res://Assets/Floor.png" id="11_alry4"]
+[ext_resource type="AudioStream" uid="uid://d3b0onxg1ibl4" path="res://Assets/SUBWAY SURFERS Main Theme.mp3" id="15_h1q52"]
 
 [node name="level" type="Node2D" node_paths=PackedStringArray("ui")]
+position = Vector2(-5, 0)
 script = ExtResource("1_hgk3k")
 ui = NodePath("UI")
-barriers = Array[PackedScene]([ExtResource("2_wf7aa"), ExtResource("3_88mqr"), ExtResource("4_qtj2e")])
+barriers = Array[PackedScene]([ExtResource("2_wf7aa"), ExtResource("3_88mqr"), ExtResource("4_qtj2e"), ExtResource("5_b6b2b"), ExtResource("6_qlk67"), ExtResource("6_i167j"), ExtResource("7_156qa")])
 
 [node name="Player" parent="." instance=ExtResource("2_ngc5o")]
 z_index = 2
-position = Vector2(200, 460)
+position = Vector2(5, 289)
 scale = Vector2(2.5, 2.5)
 
-[node name="Position 0" type="Marker2D" parent="."]
-position = Vector2(80, 28)
+[node name="Markers" type="Node" parent="."]
 
-[node name="Position 1" type="Marker2D" parent="."]
-position = Vector2(200, 28)
+[node name="Position 0" type="Marker2D" parent="Markers"]
+position = Vector2(-122, -346)
 
-[node name="Position 2" type="Marker2D" parent="."]
-position = Vector2(320, 28)
+[node name="Position 1" type="Marker2D" parent="Markers"]
+position = Vector2(-2, -346)
+
+[node name="Position 2" type="Marker2D" parent="Markers"]
+position = Vector2(118, -346)
+
+[node name="Obstacle Boundaries" type="Marker2D" parent="Markers"]
+position = Vector2(2, 522)
 
 [node name="ObstacleSpawnTimer" type="Timer" parent="."]
 wait_time = 0.75
 
-[node name="TextureRect" type="TextureRect" parent="."]
-z_index = -1
-texture_repeat = 3
-material = SubResource("ShaderMaterial_he8i8")
-offset_top = -317.0
-offset_right = 400.0
-offset_bottom = 901.0
-scale = Vector2(0.998923, 1.01337)
-texture = ExtResource("3_twru5")
-
 [node name="UI" parent="." instance=ExtResource("5_wktwd")]
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
-visible = false
 script = ExtResource("6_gs16n")
 
 [node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+texture_repeat = 2
+motion_mirroring = Vector2(0, 592)
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
-texture_repeat = 2
-position = Vector2(200, 300)
-texture = ExtResource("3_twru5")
+texture_filter = 1
+texture_repeat = 3
+position = Vector2(-1, 297)
+texture = ExtResource("11_alry4")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(5, 0)
+stream = ExtResource("15_h1q52")
 
 [connection signal="timeout" from="ObstacleSpawnTimer" to="." method="_on_timer_timeout"]

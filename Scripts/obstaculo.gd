@@ -11,7 +11,10 @@ func _process(delta: float) -> void:
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Player"):
 		print("colision")
+		restart_level()
+		
 		
 func restart_level():
-	var current_scene = get_tree().current_scene
-	get_tree().call_deferred("reload_current_scene")
+	var main_node = get_tree().root.get_node("level")
+	main_node.pauseGame()
+	
