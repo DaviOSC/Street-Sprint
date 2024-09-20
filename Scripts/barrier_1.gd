@@ -2,5 +2,4 @@ extends "res://Scripts/obstaculo.gd"
 
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Player") && not body.get("isJumping"):
-		print("colision")
-		restart_level()
+		emit_signal("player_hit", body)  

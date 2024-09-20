@@ -21,6 +21,7 @@ script = ExtResource("1_hgk3k")
 ui = NodePath("UI")
 obstaculos = Array[PackedScene]([ExtResource("2_wf7aa"), ExtResource("3_88mqr"), ExtResource("4_qtj2e"), ExtResource("6_qlk67"), ExtResource("5_b6b2b"), ExtResource("6_i167j"), ExtResource("7_156qa")])
 positions = [NodePath("Markers/Position 0"), NodePath("Markers/Position 1"), NodePath("Markers/Position 2")]
+gameSpeed = null
 
 [node name="Player" parent="." instance=ExtResource("2_ngc5o")]
 z_index = 2
@@ -66,6 +67,5 @@ stream = ExtResource("15_h1q52")
 [node name="AudioStreamPlayer2D2" type="AudioStreamPlayer2D" parent="."]
 position = Vector2(5, 0)
 stream = ExtResource("7_5k77w")
-volume_db = 11.642
 
 [connection signal="timeout" from="ObstacleSpawnTimer" to="." method="_on_timer_timeout"]

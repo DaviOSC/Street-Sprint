@@ -1,7 +1,8 @@
-[gd_scene load_steps=18 format=3 uid="uid://bneihnj1mtfk3"]
+[gd_scene load_steps=19 format=3 uid="uid://bneihnj1mtfk3"]
 
 [ext_resource type="Script" path="res://Scripts/player.gd" id="1_oxaug"]
 [ext_resource type="Texture2D" uid="uid://c1ja2vlfc43ku" path="res://Assets/Jake.png" id="2_8xmdg"]
+[ext_resource type="AudioStream" uid="uid://4guw84bahxf1" path="res://Assets/Jump.wav" id="3_868n8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_owox3"]
 size = Vector2(15, 23)
@@ -167,6 +168,11 @@ autoplay = "RunUp"
 position = Vector2(0, -77)
 position_smoothing_enabled = true
 position_smoothing_speed = 10.0
+
+[node name="AudioStreamPlayer2D3" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(5, 0)
+stream = ExtResource("3_868n8")
+volume_db = 5.433
 
 [connection signal="timeout" from="JumpTimer" to="." method="_on_jump_timer_timeout"]
 [connection signal="timeout" from="RollTimer" to="." method="_on_roll_timer_timeout"]

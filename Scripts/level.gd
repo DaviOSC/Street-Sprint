@@ -1,24 +1,19 @@
 extends Node2D
-
 @export var ui: UI
-@export var barriers = [PackedScene]
+@export var obstaculos : Array[PackedScene] = []
+@export var positions: Array[Marker2D] = []
 @export var gameSpeed = 0.25
 @onready var obstacleSpawnTimer = $ObstacleSpawnTimer
 @onready var obstacle_boundaries = $"Markers/Obstacle Boundaries"
 @onready var audioPlayer = $AudioStreamPlayer2D
+@onready var sfxPlayer = $AudioStreamPlayer2D2
 @onready var parallaxBackground = $ParallaxBackground
-var positions = []
-var obstaculos = []
+
 var canSpawn = false
 var score = 0
 var base_time = 2.5
 
 func _ready() -> void:	
-	positions.append($"Markers/Position 0")
-	positions.append($"Markers/Position 1")
-	positions.append($"Markers/Position 2")
-	for barrier in barriers:
-		obstaculos.append(barrier)
 	audioPlayer.play()
 	setGameSpeed()
 
@@ -30,6 +25,7 @@ func _process(delta: float) -> void:
 		spawnObstacle(obstaculos.pick_random())
 		canSpawn = false
 	checkObstacleBoundaries()
+		
 
 func changePosition() -> void:
 	get_node("Player")._physics_process(0.5)
@@ -38,6 +34,8 @@ func spawnObstacle(obstaculoType) -> void:
 	var obstaculo_instance = obstaculoType.instantiate()
 	obstaculo_instance.set("fall_speed", gameSpeed*500)
 	add_child(obstaculo_instance)
+	if obstaculo_instance:
+		obstaculo_instance.connect("player_hit",Callable(self, "_on_player_hit"))
 	var position_node = positions.pick_random()
 	if position_node:
 		obstaculo_instance.global_position = position_node.global_position
@@ -81,6 +79,12 @@ func pauseGame() -> void:
 			pause_button.visible = true
 	get_tree().paused = true
 
+func _on_player_hit(player: Node2D) -> void:
+	sfxPlayer.connect("finished", Callable(self, "_on_sfx_finished"))
+	sfxPlayer.play()
+
+func _on_sfx_finished() -> void:
+	pauseGame()
 
 func resumeGame() -> void:
 	get_tree().paused = false
@@ -88,7 +92,7 @@ func resumeGame() -> void:
 	var ui = current_scene.get_node("UI")
 	if ui:
 		ui.process_mode = Node.PROCESS_MODE_INHERIT
-		var pause_button = ui.get_node("PauseButton")
+		var pause_button = ui.get_node("%PauseButton")
 		if pause_button:
 			pause_button.process_mode = Node.PROCESS_MODE_INHERIT
 			pause_button.visible = false

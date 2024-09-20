@@ -1,20 +1,12 @@
 extends Area2D
 
-@export var fall_speed = 200 # Velocidade de queda em pixels por segundo
+@export var fall_speed = 200
 
-func _ready() -> void:
-	pass
+signal player_hit 
 
 func _process(delta: float) -> void:
 	translate(Vector2.DOWN * fall_speed * delta)
 
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Player"):
-		print("colision")
-		restart_level()
-		
-		
-func restart_level():
-	var main_node = get_tree().root.get_node("level")
-	main_node.pauseGame()
-	
+		emit_signal("player_hit", body)  
